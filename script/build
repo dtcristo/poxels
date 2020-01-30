@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+# Build Rust shared WASM library
+rm -rf pkg/
+wasm-pack build --target web
+
+# Build web frontend
+rm -rf dist/
+node_modules/.bin/rollup --config

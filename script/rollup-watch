@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+# Watch, build and serve frontend
+node_modules/.bin/rollup --config --watch

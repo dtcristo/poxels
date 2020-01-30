@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "sourceMap": true,
+    "strict": true
+  },
+  "include": ["web/**/*"],
+  "exclude": ["node_modules"]
+}

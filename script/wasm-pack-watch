@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+# Watch and build Rust shared WASM library
+watchexec -w src -w Cargo.toml -- wasm-pack build --target web

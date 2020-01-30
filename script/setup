@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+  # Use wasm-pack binary release in CI
+  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+else
+  # Development only tools
+  cargo install wasm-pack
+  if [ $(uname) = "Darwin" ]; then
+    brew install hivemind watchexec
+  fi
+fi
+
+# Install Rust WASM target
+rustup target add wasm32-unknown-unknown
+
+# Install web frontend dependencies
+npm ci
