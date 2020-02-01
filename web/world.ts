@@ -38,10 +38,11 @@ export default class World {
     this.scene.add(cube);
 
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
+    this.animate = this.animate.bind(this);
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(this.animate);
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
