@@ -3,6 +3,7 @@ import html from "@rollup/plugin-html";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import ts from "@wessberg/rollup-plugin-ts";
+import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
 import livereload from "rollup-plugin-livereload";
 import serve from "rollup-plugin-serve";
@@ -31,6 +32,10 @@ export default [
       nodeResolve(),
       commonjs(),
       ts(),
+      postcss({
+        sourceMap: true,
+        minimize: production
+      }),
       production && terser(),
       !production && livereload("dist"),
       !production && serve("dist")

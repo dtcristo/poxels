@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "three": "^0.112.1",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
@@ -11,9 +12,11 @@
     "@rollup/plugin-html": "^0.1.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@wessberg/rollup-plugin-ts": "^1.2.13",
+    "node-sass": "^4.13.1",
     "rollup": "^1.29.1",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-postcss": "^2.0.5",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^5.2.0",
     "typescript": "^3.7.5"
