@@ -1,31 +1,39 @@
-import * as THREE from "three";
+import {
+  PerspectiveCamera,
+  WebGLRenderer,
+  Scene,
+  GridHelper,
+  BoxGeometry,
+  MeshNormalMaterial,
+  Mesh
+} from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export default class World {
-  camera: THREE.PerspectiveCamera;
-  renderer: THREE.WebGLRenderer;
+  camera: PerspectiveCamera;
+  renderer: WebGLRenderer;
   controls: OrbitControls;
-  scene: THREE.Scene;
+  scene: Scene;
 
   constructor() {
-    this.camera = new THREE.PerspectiveCamera(45, this.aspect(), 1, 1000);
+    this.camera = new PerspectiveCamera(45, this.aspect(), 1, 1000);
     this.camera.position.set(10, 10, 10);
     this.camera.lookAt(0, 0, 0);
 
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
 
-    const grid = new THREE.GridHelper(100, 100, 0xff0000, 0x00ff00);
+    const grid = new GridHelper(100, 100, 0xff0000, 0x00ff00);
     this.scene.add(grid);
 
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshNormalMaterial();
-    const cube = new THREE.Mesh(geometry, material);
+    const geometry = new BoxGeometry();
+    const material = new MeshNormalMaterial();
+    const cube = new Mesh(geometry, material);
     cube.position.set(0.5, 0.5, 0.5);
     this.scene.add(cube);
 
