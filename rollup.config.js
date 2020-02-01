@@ -1,7 +1,6 @@
 import copy from "rollup-plugin-copy";
 import html from "@rollup/plugin-html";
 import nodeResolve from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
 import ts from "@wessberg/rollup-plugin-ts";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
@@ -24,8 +23,7 @@ export default [
         verbose: true
       }),
       html({ title: "Poxel" }),
-      nodeResolve(),
-      commonjs(),
+      nodeResolve({ modulesOnly: true }),
       ts(),
       postcss({
         sourceMap: true,
