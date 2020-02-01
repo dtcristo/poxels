@@ -1,8 +1,7 @@
 # You must change these to your own details.
 [package]
-name = "rust-rollup-template"
+name = "poxel"
 version = "0.1.0"
-authors = ["You <you@example.com>"]
 publish = false
 edition = "2018"
 

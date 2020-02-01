@@ -20,15 +20,10 @@ export default [
     },
     plugins: [
       copy({
-        targets: [
-          {
-            src: ["pkg/rust_rollup_template_bg.wasm"],
-            dest: "dist"
-          }
-        ],
+        targets: [{ src: ["pkg/poxel_bg.wasm"], dest: "dist" }],
         verbose: true
       }),
-      html({ title: "My Rust + Rollup project!" }),
+      html({ title: "Poxel" }),
       nodeResolve(),
       commonjs(),
       ts(),

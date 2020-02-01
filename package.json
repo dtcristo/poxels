@@ -1,7 +1,4 @@
 {
-  "author": "You <you@example.com>",
-  "name": "rust-rollup-template",
-  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "three": "^0.112.1",

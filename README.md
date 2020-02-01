@@ -1,3 +1,5 @@
+# Poxel
+
 ## How to install
 
 Installs project dependences. See `script/setup` for details.
