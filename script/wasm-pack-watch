@@ -2,4 +2,4 @@
 set -e
 
 # Watch and build Rust shared WASM library
-watchexec -w src -w Cargo.toml -- wasm-pack build --target web
+watchexec -w src -w Cargo.toml -- wasm-pack build --debug --target web
