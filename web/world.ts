@@ -1,11 +1,11 @@
 import {
-  PerspectiveCamera,
-  WebGLRenderer,
-  Scene,
-  GridHelper,
   BoxGeometry,
+  GridHelper,
+  Mesh,
   MeshNormalMaterial,
-  Mesh
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
