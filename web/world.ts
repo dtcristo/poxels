@@ -20,11 +20,12 @@ export default class World {
     this.camera.position.set(10, 10, 10);
     this.camera.lookAt(0, 0, 0);
 
-    this.renderer = new WebGLRenderer({ antialias: true });
+    this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.autoRotate = true;
 
     this.scene = new Scene();
 
