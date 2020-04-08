@@ -36,22 +36,39 @@ export default class World {
 
     const geometry = new BufferGeometry();
 
-    const a = [0, 0, 0]
-    const b = [1, 0, 0]
-    const c = [1, 0, 1]
-    const d = [0, 0, 1]
-    const e = [0.5, 0, 0.5]
-    const f = [0.5, 0.5, 0]
-    const g = [1, 0.5, 0.5]
-    const h = [0.5, 0.5, 1]
-    const i = [0, 0.5, 0.5]
-    const j = [0, 1, 0]
-    const k = [1, 1, 0]
-    const l = [1, 1, 1]
-    const m = [0, 1, 1]
-    const n = [0.5, 1, 0.5]
+    const a_v = [0, 0, 0]
+    const b_v = [1, 0, 0]
+    const c_v = [1, 0, 1]
+    const d_v = [0, 0, 1]
+    const e_v = [0.5, 0, 0.5]
+    const f_v = [0.5, 0.5, 0]
+    const g_v = [1, 0.5, 0.5]
+    const h_v = [0.5, 0.5, 1]
+    const i_v = [0, 0.5, 0.5]
+    const j_v = [0, 1, 0]
+    const k_v = [1, 1, 0]
+    const l_v = [1, 1, 1]
+    const m_v = [0, 1, 1]
+    const n_v = [0.5, 1, 0.5]
 
-    const vertices = new Float32Array([
+    const vertices = new Float32Array([a_v,b_v,c_v,d_v,e_v,f_v,g_v,h_v,i_v,j_v,k_v,l_v,m_v,n_v].flat());
+
+    const a = 0
+    const b = 1
+    const c = 2
+    const d = 3
+    const e = 4
+    const f = 5
+    const g = 6
+    const h = 7
+    const i = 8
+    const j = 9
+    const k = 10
+    const l = 11
+    const m = 12
+    const n = 13
+
+    const indices = [
       //1
       a,f,b,
       a,e,f,
@@ -166,11 +183,12 @@ export default class World {
       g,n,h,
       i,h,n,
       i,n,f,
-    ].flat());
+    ].flat();
 
+    geometry.setIndex(indices);
     geometry.setAttribute("position", new BufferAttribute(vertices, 3));
     geometry.computeVertexNormals();
-    const material = new MeshNormalMaterial();
+    const material = new MeshNormalMaterial({ flatShading: true });
     const mesh = new Mesh(geometry, material);
     this.scene.add(mesh);
 
