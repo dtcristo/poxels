@@ -286,7 +286,6 @@ export default class World {
   }
 
   onViewportChange() {
-    console.log("display change");
     this.camera.aspect = this.aspect();
     this.camera.updateProjectionMatrix();
     // this.renderer.setPixelRatio(window.devicePixelRatio);
