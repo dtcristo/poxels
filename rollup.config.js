@@ -22,7 +22,7 @@ export default [
         targets: [{ src: ["pkg/poxels_bg.wasm"], dest: "dist" }],
         verbose: true
       }),
-      html({ title: "Poxel" }),
+      html({ title: "Poxels" }),
       nodeResolve({ modulesOnly: true }),
       ts(),
       postcss({
