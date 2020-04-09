@@ -18,23 +18,26 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
+import Chunklet from "./chunklet";
+
+const X_SIZE = 10;
+const Y_SIZE = 10;
+const Z_SIZE = 10;
 
 export default class World {
   camera: PerspectiveCamera;
   renderer: WebGLRenderer;
   controls: OrbitControls;
   scene: Scene;
-  geometry: Geometry;
-  mesh: Mesh;
   stats: Stats;
   raycaster: Raycaster;
   mouse: Vector2;
-  selectedFaceIndex?: number;
+  chunklets: Array<Array<Array<Chunklet | undefined>>>;
+  selectedChunk?: Vector3;
 
   constructor() {
     this.camera = new PerspectiveCamera(45, this.aspect(), 1, 1000);
-    this.camera.position.set(-3, 3, -3);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.position.set(-10, 10, -10);
 
     this.renderer = new WebGLRenderer({ antialias: true });
     // this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -48,196 +51,43 @@ export default class World {
     this.mouse = new Vector2(9999, 9999);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.target = new Vector3(5, 0, 5);
     this.controls.autoRotate = true;
 
     this.scene = new Scene();
 
-    const grid = new GridHelper(100, 100, 0xff0000, 0x00ff00);
-    this.scene.add(grid);
+    // const grid = new GridHelper(10, 10, 0xff0000, 0x00ff00);
+    // grid.position.copy(new Vector3(5, 0, 5));
+    // this.scene.add(grid);
 
-    this.geometry = new Geometry();
-
-    const a_v = [0, 0, 0];
-    const b_v = [1, 0, 0];
-    const c_v = [1, 0, 1];
-    const d_v = [0, 0, 1];
-    const e_v = [0.5, 0, 0.5];
-    const f_v = [0.5, 0.5, 0];
-    const g_v = [1, 0.5, 0.5];
-    const h_v = [0.5, 0.5, 1];
-    const i_v = [0, 0.5, 0.5];
-    const j_v = [0, 1, 0];
-    const k_v = [1, 1, 0];
-    const l_v = [1, 1, 1];
-    const m_v = [0, 1, 1];
-    const n_v = [0.5, 1, 0.5];
-
-    const verticesRaw = [
-      a_v,
-      b_v,
-      c_v,
-      d_v,
-      e_v,
-      f_v,
-      g_v,
-      h_v,
-      i_v,
-      j_v,
-      k_v,
-      l_v,
-      m_v,
-      n_v
-    ];
-
-    const a = 0;
-    const b = 1;
-    const c = 2;
-    const d = 3;
-    const e = 4;
-    const f = 5;
-    const g = 6;
-    const h = 7;
-    const i = 8;
-    const j = 9;
-    const k = 10;
-    const l = 11;
-    const m = 12;
-    const n = 13;
-
-    const facesRaw = [
-      //1
-      [a, f, b],
-      [a, e, f],
-      [b, f, e],
-      [a, b, e],
-      //2
-      [b, c, e],
-      [b, g, c],
-      [e, c, g],
-      [e, g, b],
-      //3
-      [d, e, c],
-      [d, h, e],
-      [e, h, c],
-      [d, c, h],
-      //4
-      [a, d, i],
-      [a, i, e],
-      [d, e, i],
-      [a, e, d],
-      //5
-      [a, f, e],
-      [a, e, i],
-      [e, f, i],
-      [a, i, f],
-      //6
-      [b, e, f],
-      [e, g, f],
-      [b, f, g],
-      [g, e, b],
-      //7
-      [c, e, g],
-      [c, h, e],
-      [e, h, g],
-      [c, g, h],
-      //8
-      [d, i, e],
-      [d, h, i],
-      [e, i, h],
-      [d, e, h],
-      //9
-      [a, j, f],
-      [a, i, j],
-      [a, f, i],
-      [j, i, f],
-      //10
-      [b, f, k],
-      [b, k, g],
-      [b, g, f],
-      [f, g, k],
-      //11
-      [c, h, g],
-      [h, l, g],
-      [c, g, l],
-      [c, l, h],
-      //12
-      [d, m, i],
-      [d, h, m],
-      [d, i, h],
-      [i, m, h],
-      //13
-      [f, i, j],
-      [f, j, n],
-      [j, i, n],
-      [f, n, i]
-      // //14
-      // [f, n, k],
-      // [k, n, g],
-      // [f, g, n],
-      // [f, k, g],
-      // //15
-      // [g, n, l],
-      // [g, h, n],
-      // [h, l, n],
-      // [g, l, h],
-      // //16
-      // [h, i, n],
-      // [h, m, i],
-      // [i, m, n],
-      // [m, h, n],
-      // //17
-      // [f, j, k],
-      // [f, n, j],
-      // [f, k, n],
-      // [j, n, k],
-      // //18
-      // [k, n, l],
-      // [g, k, l],
-      // [g, l, n],
-      // [g, n, k],
-      // //19
-      // [n, m, l],
-      // [h, m, n],
-      // [h, n, l],
-      // [h, l, m],
-      // //20
-      // [i, m, j],
-      // [m, n, j],
-      // [i, j, n],
-      // [i, n, m],
-      // //21
-      // [g, f, h],
-      // [f, i, h],
-      // [e, i, f],
-      // [e, h, i],
-      // [e, g, h],
-      // [e, f, g],
-      // //22
-      // [f, h, i],
-      // [f, g, h],
-      // [f, n, g],
-      // [g, n, h],
-      // [i, h, n],
-      // [i, n, f]
-    ];
-
-    this.geometry.vertices = verticesRaw.map(v => new Vector3(...v));
-    this.geometry.faces = facesRaw.map(f => new Face3(f[0], f[1], f[2]));
-
-    this.geometry.computeVertexNormals();
-
-    // const normalMaterial = new MeshNormalMaterial({ flatShading: true });
-    // const basicMaterial = new MeshBasicMaterial({ color: 0xff0000 });
-    const faceColorsMaterial = new MeshBasicMaterial({
-      vertexColors: FaceColors
-    });
-
-    for (let i = 0; i < this.geometry.faces.length; i++) {
-      this.geometry.faces[i].color.setHex(0xffffff);
+    this.chunklets = new Array(X_SIZE);
+    for (let x = 0; x < X_SIZE; x++) {
+      this.chunklets[x] = new Array(Y_SIZE);
+      for (let y = 0; y < Y_SIZE; y++) {
+        this.chunklets[x][y] = new Array(Z_SIZE);
+        for (let z = 0; z < Z_SIZE; z++) {
+          if (y === 0) {
+            this.chunklets[x][y][z] = new Chunklet(new Vector3(x, y, z));
+          }
+        }
+      }
     }
 
-    this.mesh = new Mesh(this.geometry, faceColorsMaterial);
-    this.scene.add(this.mesh);
+    // this.chunklets[0][0][0] = new Chunklet(new Vector3(0, 0, 0));
+    // this.chunklets[1][0][0] = new Chunklet(new Vector3(1, 0, 0));
+    // this.chunklets[0][0][1] = new Chunklet(new Vector3(0, 0, 1));
+    // this.chunklets[1][0][1] = new Chunklet(new Vector3(1, 0, 1));
+
+    for (let x = 0; x < X_SIZE; x++) {
+      for (let y = 0; y < Y_SIZE; y++) {
+        for (let z = 0; z < Z_SIZE; z++) {
+          const chunklet = this.chunklets[x][y][z];
+          if (chunklet) {
+            this.scene.add(chunklet.mesh);
+          }
+        }
+      }
+    }
 
     window.addEventListener("resize", this.onViewportChange.bind(this), false);
     matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addListener(
@@ -254,31 +104,35 @@ export default class World {
   }
 
   update() {
-    this.updateSelectedFace();
-    this.controls.update();
-    this.stats.update();
-  }
-
-  updateSelectedFace() {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const intersections = this.raycaster.intersectObject(this.mesh);
+    const objects = [];
+    for (let x = 0; x < X_SIZE; x++) {
+      for (let y = 0; y < Y_SIZE; y++) {
+        for (let z = 0; z < Z_SIZE; z++) {
+          const chunklet = this.chunklets[x][y][z];
+          if (chunklet) {
+            objects.push(chunklet.mesh);
+          }
+        }
+      }
+    }
 
-    let newSelectedFaceIndex: number | undefined;
+    const intersections = this.raycaster.intersectObjects(objects);
     if (intersections.length > 0) {
-      newSelectedFaceIndex = intersections[0].faceIndex;
+      const position = intersections[0].object.position;
+      const chunklet = this.chunklets[position.x][position.y][position.z];
+      const faceIndex = intersections[0].faceIndex;
+      if (chunklet && faceIndex) {
+        chunklet.updateFaceSelection(faceIndex);
+      }
     }
 
-    if (newSelectedFaceIndex !== this.selectedFaceIndex) {
-      for (let i = 0; i < this.geometry.faces.length; i++) {
-        this.geometry.faces[i].color.setHex(0xffffff);
-      }
-      if (newSelectedFaceIndex !== undefined) {
-        this.geometry.faces[newSelectedFaceIndex].color.setHex(0xff0000);
-      }
-      this.geometry.colorsNeedUpdate = true;
-      this.selectedFaceIndex = newSelectedFaceIndex;
-    }
+    // for (const chunklet of this.chunklets) {
+    //   chunklet.update();
+    // }
+    this.controls.update();
+    this.stats.update();
   }
 
   render() {
