@@ -9,3 +9,7 @@ jobs:
       - run: script/setup
       - run: script/build
       # - run: script/test --chrome
+      - run: script/deploy
+        if: github.ref == 'refs/heads/master'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

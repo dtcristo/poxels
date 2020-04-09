@@ -10,6 +10,7 @@
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@types/lodash-es": "^4.17.3",
     "@wessberg/rollup-plugin-ts": "^1.2.13",
+    "firebase-tools": "^8.0.2",
     "node-sass": "^4.13.1",
     "rollup": "^1.29.1",
     "rollup-plugin-copy": "^3.3.0",
