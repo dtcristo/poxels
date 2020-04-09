@@ -83,7 +83,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "poxel"
+name = "poxels"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",

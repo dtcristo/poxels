@@ -1,6 +1,6 @@
 # You must change these to your own details.
 [package]
-name = "poxel"
+name = "poxels"
 version = "0.1.0"
 publish = false
 edition = "2018"

@@ -1,4 +1,4 @@
-# Poxel
+# Poxels
 
 ## How to install
 
