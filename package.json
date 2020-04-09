@@ -1,12 +1,14 @@
 {
   "private": true,
   "dependencies": {
+    "lodash-es": "^4.17.15",
     "three": "^0.112.1",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@rollup/plugin-html": "^0.1.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
+    "@types/lodash-es": "^4.17.3",
     "@wessberg/rollup-plugin-ts": "^1.2.13",
     "node-sass": "^4.13.1",
     "rollup": "^1.29.1",
