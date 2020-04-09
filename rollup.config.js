@@ -19,7 +19,7 @@ export default [
     },
     plugins: [
       copy({
-        targets: [{ src: ["pkg/poxel_bg.wasm"], dest: "dist" }],
+        targets: [{ src: ["pkg/poxels_bg.wasm"], dest: "dist" }],
         verbose: true
       }),
       html({ title: "Poxel" }),
