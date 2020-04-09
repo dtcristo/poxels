@@ -249,8 +249,14 @@ export default class World {
 
   animate() {
     requestAnimationFrame(this.animate);
-    this.updateSelectedFace();
+    this.update();
     this.render();
+  }
+
+  update() {
+    this.updateSelectedFace();
+    this.controls.update();
+    this.stats.update();
   }
 
   updateSelectedFace() {
@@ -276,9 +282,7 @@ export default class World {
   }
 
   render() {
-    this.controls.update();
     this.renderer.render(this.scene, this.camera);
-    this.stats.update();
   }
 
   aspect() {
