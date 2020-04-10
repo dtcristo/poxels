@@ -1,20 +1,10 @@
 import {
-  BoxGeometry,
-  GridHelper,
-  Mesh,
-  MeshNormalMaterial,
-  MeshBasicMaterial,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  BufferGeometry,
-  Geometry,
-  BufferAttribute,
   Raycaster,
   Vector2,
-  Vector3,
-  Face3,
-  FaceColors
+  Vector3
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
