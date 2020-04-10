@@ -8,6 +8,8 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
+import flattenDeep from "lodash-es/flattenDeep";
+import compact from "lodash-es/compact";
 import Chunklet from "./chunklet";
 
 const X_SIZE = 10;
@@ -22,7 +24,7 @@ export default class World {
   stats: Stats;
   raycaster: Raycaster;
   mouse: Vector2;
-  chunklets: Array<Array<Array<Chunklet | undefined>>>;
+  chunkletGrid: Array<Array<Array<Chunklet | undefined>>>;
   selectedChunk?: Vector3;
 
   constructor() {
@@ -50,33 +52,26 @@ export default class World {
     // grid.position.copy(new Vector3(5, 0, 5));
     // this.scene.add(grid);
 
-    this.chunklets = new Array(X_SIZE);
+    this.chunkletGrid = new Array(X_SIZE);
     for (let x = 0; x < X_SIZE; x++) {
-      this.chunklets[x] = new Array(Y_SIZE);
+      this.chunkletGrid[x] = new Array(Y_SIZE);
       for (let y = 0; y < Y_SIZE; y++) {
-        this.chunklets[x][y] = new Array(Z_SIZE);
+        this.chunkletGrid[x][y] = new Array(Z_SIZE);
         for (let z = 0; z < Z_SIZE; z++) {
           if (y === 0) {
-            this.chunklets[x][y][z] = new Chunklet(new Vector3(x, y, z));
+            this.chunkletGrid[x][y][z] = new Chunklet(new Vector3(x, y, z));
           }
         }
       }
     }
 
-    // this.chunklets[0][0][0] = new Chunklet(new Vector3(0, 0, 0));
-    // this.chunklets[1][0][0] = new Chunklet(new Vector3(1, 0, 0));
-    // this.chunklets[0][0][1] = new Chunklet(new Vector3(0, 0, 1));
-    // this.chunklets[1][0][1] = new Chunklet(new Vector3(1, 0, 1));
+    // this.chunkletGrid[0][0][0] = new Chunklet(new Vector3(0, 0, 0));
+    // this.chunkletGrid[1][0][0] = new Chunklet(new Vector3(1, 0, 0));
+    // this.chunkletGrid[0][0][1] = new Chunklet(new Vector3(0, 0, 1));
+    // this.chunkletGrid[1][0][1] = new Chunklet(new Vector3(1, 0, 1));
 
-    for (let x = 0; x < X_SIZE; x++) {
-      for (let y = 0; y < Y_SIZE; y++) {
-        for (let z = 0; z < Z_SIZE; z++) {
-          const chunklet = this.chunklets[x][y][z];
-          if (chunklet) {
-            this.scene.add(chunklet.mesh);
-          }
-        }
-      }
+    for (const chunklet of this.chunklets()) {
+      this.scene.add(chunklet.mesh);
     }
 
     window.addEventListener("resize", this.onViewportChange.bind(this), false);
@@ -97,28 +92,21 @@ export default class World {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     const objects = [];
-    for (let x = 0; x < X_SIZE; x++) {
-      for (let y = 0; y < Y_SIZE; y++) {
-        for (let z = 0; z < Z_SIZE; z++) {
-          const chunklet = this.chunklets[x][y][z];
-          if (chunklet) {
-            objects.push(chunklet.mesh);
-          }
-        }
-      }
+    for (const chunklet of this.chunklets()) {
+      objects.push(chunklet.mesh);
     }
 
     const intersections = this.raycaster.intersectObjects(objects);
     if (intersections.length > 0) {
       const position = intersections[0].object.position;
-      const chunklet = this.chunklets[position.x][position.y][position.z];
+      const chunklet = this.chunkletGrid[position.x][position.y][position.z];
       const faceIndex = intersections[0].faceIndex;
       if (chunklet && faceIndex) {
         chunklet.updateFaceSelection(faceIndex);
       }
     }
 
-    // for (const chunklet of this.chunklets) {
+    // for (const chunklet of this.chunkletGrid) {
     //   chunklet.update();
     // }
     this.controls.update();
@@ -143,5 +131,9 @@ export default class World {
   onMouseMove(event: MouseEvent) {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  }
+
+  chunklets(): Chunklet[] {
+    return compact(flattenDeep(this.chunkletGrid));
   }
 }
