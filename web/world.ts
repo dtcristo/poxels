@@ -8,8 +8,7 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
-import flattenDeep from "lodash-es/flattenDeep";
-import compact from "lodash-es/compact";
+import { compact, flattenDeep } from "lodash-es";
 import Chunklet from "./chunklet";
 
 const X_SIZE = 10;
@@ -29,7 +28,7 @@ export default class World {
 
   constructor() {
     this.camera = new PerspectiveCamera(45, this.aspect(), 1, 1000);
-    this.camera.position.set(-10, 10, -10);
+    this.camera.position.set(-5, 10, -5);
 
     this.renderer = new WebGLRenderer({ antialias: true });
     // this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -37,7 +36,7 @@ export default class World {
     document.body.appendChild(this.renderer.domElement);
 
     this.stats = Stats();
-    document.body.appendChild(this.stats.domElement);
+    // document.body.appendChild(this.stats.domElement);
 
     this.raycaster = new Raycaster();
 
@@ -75,6 +74,7 @@ export default class World {
     );
     window.addEventListener("mousemove", this.onMouseMove.bind(this), false);
     window.addEventListener("mouseout", this.onMouseOut.bind(this), false);
+    window.addEventListener("mousedown", this.onMouseDown.bind(this), false);
     this.animate = this.animate.bind(this);
   }
 
@@ -105,9 +105,6 @@ export default class World {
       }
     }
 
-    // for (const chunklet of this.chunklets()) {
-    //   chunklet.update();
-    // }
     this.controls.update();
     this.stats.update();
   }
@@ -145,18 +142,16 @@ export default class World {
     if (this.mouse !== undefined) {
       this.raycaster.setFromCamera(this.mouse, this.camera);
 
-      const objects = [];
-      for (const chunklet of this.chunklets()) {
-        objects.push(chunklet.mesh);
-      }
+      const objects = this.chunklets().map(c => c.mesh);
 
       const intersections = this.raycaster.intersectObjects(objects);
       if (intersections.length > 0) {
-        const position = intersections[0].object.position;
-        const chunklet = this.chunkletGrid[position.x][position.y][position.z];
-        const faceIndex = intersections[0].faceIndex;
-        if (chunklet && faceIndex) {
-          // chunklet.deleteAtFace(faceIndex);
+        const { x, y, z } = intersections[0].object.position;
+        const face = intersections[0].face;
+        const chunklet = this.chunkletGrid[x][y][z];
+        if (face && chunklet) {
+          const { a, b, c } = face;
+          chunklet.deleteAtFace([a, b, c]);
         }
       }
     }
