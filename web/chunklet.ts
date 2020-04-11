@@ -182,27 +182,18 @@ export default class Chunklet {
 
     this.geometry.vertices = verticesRaw.map(v => new Vector3(...v));
     this.geometry.faces = facesRaw.map(f => new Face3(f[0], f[1], f[2]));
-
     this.geometry.computeVertexNormals();
 
-    const normalMaterial = new MeshNormalMaterial({ flatShading: true });
-    // const basicMaterial = new MeshBasicMaterial({ color: 0xff0000 });
-    const material = new MeshBasicMaterial({
-      vertexColors: FaceColors
-    });
+    // const normalMaterial = new MeshNormalMaterial({ flatShading: true });
+    const material = new MeshBasicMaterial({ vertexColors: FaceColors });
 
-    // for (let i = 0; i < this.geometry.faces.length; i++) {
-    //   this.geometry.faces[i].color.setHex(0xffffff);
-    // }
-
-    // this.mesh = new Mesh(this.geometry, normalMaterial);
     this.mesh = new Mesh(this.geometry, material);
     this.mesh.position.copy(position);
   }
 
   update() {}
 
-  updateFaceSelection(faceIndex: number) {
+  updateFaceSelection(faceIndex?: number) {
     if (faceIndex !== this.selectedFaceIndex) {
       for (let i = 0; i < this.geometry.faces.length; i++) {
         this.geometry.faces[i].color.setHex(0xffffff);

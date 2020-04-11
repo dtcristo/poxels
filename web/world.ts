@@ -22,9 +22,9 @@ export default class World {
   controls: OrbitControls;
   scene: Scene;
   stats: Stats;
-  raycaster: Raycaster;
-  mouse: Vector2;
   chunkletGrid: Array<Array<Array<Chunklet | undefined>>>;
+  raycaster: Raycaster;
+  mouse?: Vector2;
   selectedChunk?: Vector3;
 
   constructor() {
@@ -40,7 +40,6 @@ export default class World {
     document.body.appendChild(this.stats.domElement);
 
     this.raycaster = new Raycaster();
-    this.mouse = new Vector2(9999, 9999);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.target = new Vector3(5, 0, 5);
@@ -65,11 +64,6 @@ export default class World {
       }
     }
 
-    // this.chunkletGrid[0][0][0] = new Chunklet(new Vector3(0, 0, 0));
-    // this.chunkletGrid[1][0][0] = new Chunklet(new Vector3(1, 0, 0));
-    // this.chunkletGrid[0][0][1] = new Chunklet(new Vector3(0, 0, 1));
-    // this.chunkletGrid[1][0][1] = new Chunklet(new Vector3(1, 0, 1));
-
     for (const chunklet of this.chunklets()) {
       this.scene.add(chunklet.mesh);
     }
@@ -79,6 +73,7 @@ export default class World {
       this.onViewportChange.bind(this)
     );
     window.addEventListener("mousemove", this.onMouseMove.bind(this), false);
+    window.addEventListener("mouseout", this.onMouseOut.bind(this), false);
     this.animate = this.animate.bind(this);
   }
 
@@ -89,24 +84,27 @@ export default class World {
   }
 
   update() {
-    this.raycaster.setFromCamera(this.mouse, this.camera);
+    if (this.mouse) {
+      this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const objects = [];
-    for (const chunklet of this.chunklets()) {
-      objects.push(chunklet.mesh);
-    }
+      const objects = [];
+      for (const chunklet of this.chunklets()) {
+        objects.push(chunklet.mesh);
+        chunklet.updateFaceSelection(undefined);
+      }
 
-    const intersections = this.raycaster.intersectObjects(objects);
-    if (intersections.length > 0) {
-      const position = intersections[0].object.position;
-      const chunklet = this.chunkletGrid[position.x][position.y][position.z];
-      const faceIndex = intersections[0].faceIndex;
-      if (chunklet && faceIndex) {
-        chunklet.updateFaceSelection(faceIndex);
+      const intersections = this.raycaster.intersectObjects(objects);
+      if (intersections.length > 0) {
+        const position = intersections[0].object.position;
+        const chunklet = this.chunkletGrid[position.x][position.y][position.z];
+        const faceIndex = intersections[0].faceIndex;
+        if (chunklet && faceIndex) {
+          chunklet.updateFaceSelection(faceIndex);
+        }
       }
     }
 
-    // for (const chunklet of this.chunkletGrid) {
+    // for (const chunklet of this.chunklets()) {
     //   chunklet.update();
     // }
     this.controls.update();
@@ -129,8 +127,14 @@ export default class World {
   }
 
   onMouseMove(event: MouseEvent) {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.mouse = new Vector2(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+    );
+  }
+
+  onMouseOut(_event: MouseEvent) {
+    this.mouse = undefined;
   }
 
   chunklets(): Chunklet[] {
