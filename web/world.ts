@@ -43,7 +43,7 @@ export default class World {
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.target = new Vector3(5, 0, 5);
-    this.controls.autoRotate = true;
+    // this.controls.autoRotate = true;
 
     this.scene = new Scene();
 
@@ -57,7 +57,7 @@ export default class World {
       for (let y = 0; y < Y_SIZE; y++) {
         this.chunkletGrid[x][y] = new Array(Z_SIZE);
         for (let z = 0; z < Z_SIZE; z++) {
-          if (y === 0) {
+          if (x === 5 && y === 0 && z === 5) {
             this.chunkletGrid[x][y][z] = new Chunklet(new Vector3(x, y, z));
           }
         }
@@ -98,7 +98,7 @@ export default class World {
         const position = intersections[0].object.position;
         const chunklet = this.chunkletGrid[position.x][position.y][position.z];
         const faceIndex = intersections[0].faceIndex;
-        if (chunklet && faceIndex) {
+        if (chunklet !== undefined && faceIndex !== undefined) {
           chunklet.updateFaceSelection(faceIndex);
         }
       }
@@ -135,6 +135,30 @@ export default class World {
 
   onMouseOut(_event: MouseEvent) {
     this.mouse = undefined;
+  }
+
+  onMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    this.onMouseMove(event);
+
+    if (this.mouse !== undefined) {
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+
+      const objects = [];
+      for (const chunklet of this.chunklets()) {
+        objects.push(chunklet.mesh);
+      }
+
+      const intersections = this.raycaster.intersectObjects(objects);
+      if (intersections.length > 0) {
+        const position = intersections[0].object.position;
+        const chunklet = this.chunkletGrid[position.x][position.y][position.z];
+        const faceIndex = intersections[0].faceIndex;
+        if (chunklet && faceIndex) {
+          // chunklet.deleteAtFace(faceIndex);
+        }
+      }
+    }
   }
 
   chunklets(): Chunklet[] {
