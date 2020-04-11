@@ -57,7 +57,8 @@ export default class World {
       for (let y = 0; y < Y_SIZE; y++) {
         this.chunkletGrid[x][y] = new Array(Z_SIZE);
         for (let z = 0; z < Z_SIZE; z++) {
-          if (x === 5 && y === 0 && z === 5) {
+          if (y === 0) {
+            // if (x === 5 && y === 0 && z === 5) {
             this.chunkletGrid[x][y][z] = new Chunklet(new Vector3(x, y, z));
           }
         }
