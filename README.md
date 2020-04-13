@@ -26,29 +26,19 @@ Builds the project and places it into the `dist` folder.
 script/build
 ```
 
-## How to run unit tests
+## License
 
-```sh
-# Runs tests in Firefox
-script/test --firefox
+Licensed under either of
 
-# Runs tests in Chrome
-script/test --chrome
+- Apache License, Version 2.0
+  ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license
+  ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
-# Runs tests in Safari
-script/test --safari
-```
+at your option.
 
-## What does each file do?
+## Contribution
 
-- `Cargo.toml` contains the standard Rust metadata. You put your Rust dependencies in here.
-
-- `package.json` contains the standard npm metadata. You put your TypeScript dependencies in here.
-
-- `rollup.config.js` contains the Rollup configuration.
-
-- The `src` folder contains your Rust code.
-
-- The `web` folder contains your TypeScript code (`index.ts` is used to hook everything into Rollup).
-
-- The `tests` folder contains your Rust unit tests.
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
