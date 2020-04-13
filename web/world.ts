@@ -36,7 +36,7 @@ export default class World {
     document.body.appendChild(this.renderer.domElement);
 
     this.stats = Stats();
-    // document.body.appendChild(this.stats.domElement);
+    document.body.appendChild(this.stats.domElement);
 
     this.raycaster = new Raycaster();
 
@@ -72,8 +72,8 @@ export default class World {
     matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addListener(
       this.onViewportChange.bind(this)
     );
-    window.addEventListener("mousemove", this.onMouseMove.bind(this), false);
-    window.addEventListener("mouseout", this.onMouseOut.bind(this), false);
+    // window.addEventListener("mousemove", this.onMouseMove.bind(this), false);
+    // window.addEventListener("mouseout", this.onMouseOut.bind(this), false);
     window.addEventListener("mousedown", this.onMouseDown.bind(this), false);
     this.animate = this.animate.bind(this);
   }
@@ -85,25 +85,25 @@ export default class World {
   }
 
   update() {
-    if (this.mouse) {
-      this.raycaster.setFromCamera(this.mouse, this.camera);
+    // if (this.mouse) {
+    //   this.raycaster.setFromCamera(this.mouse, this.camera);
 
-      const objects = [];
-      for (const chunklet of this.chunklets()) {
-        objects.push(chunklet.mesh);
-        chunklet.updateFaceSelection(undefined);
-      }
+    //   const objects = [];
+    //   for (const chunklet of this.chunklets()) {
+    //     objects.push(chunklet.mesh);
+    //     chunklet.updateFaceSelection(undefined);
+    //   }
 
-      const intersections = this.raycaster.intersectObjects(objects);
-      if (intersections.length > 0) {
-        const position = intersections[0].object.position;
-        const chunklet = this.chunkletGrid[position.x][position.y][position.z];
-        const faceIndex = intersections[0].faceIndex;
-        if (chunklet !== undefined && faceIndex !== undefined) {
-          chunklet.updateFaceSelection(faceIndex);
-        }
-      }
-    }
+    //   const intersections = this.raycaster.intersectObjects(objects);
+    //   if (intersections.length > 0) {
+    //     const position = intersections[0].object.position;
+    //     const chunklet = this.chunkletGrid[position.x][position.y][position.z];
+    //     const faceIndex = intersections[0].faceIndex;
+    //     if (chunklet !== undefined && faceIndex !== undefined) {
+    //       chunklet.updateFaceSelection(faceIndex);
+    //     }
+    //   }
+    // }
 
     this.controls.update();
     this.stats.update();
@@ -143,18 +143,76 @@ export default class World {
       this.raycaster.setFromCamera(this.mouse, this.camera);
 
       const objects = this.chunklets().map(c => c.mesh);
-
       const intersections = this.raycaster.intersectObjects(objects);
+
       if (intersections.length > 0) {
         const { x, y, z } = intersections[0].object.position;
         const face = intersections[0].face;
         const chunklet = this.chunkletGrid[x][y][z];
         if (face && chunklet) {
           const { a, b, c } = face;
-          chunklet.deleteAtFace([a, b, c]);
+          if (event.button === 0) {
+            const result = chunklet.createAtFace([a, b, c]);
+            if (result !== undefined) {
+              const [x_n, y_n, z_n] = this.moveDirection(
+                [x, y, z],
+                result.direction
+              );
+              if (
+                x_n >= 0 &&
+                x_n < X_SIZE &&
+                y_n >= 0 &&
+                y_n < Y_SIZE &&
+                z_n >= 0 &&
+                z_n < Z_SIZE
+              ) {
+                let oppositeChunklet = this.chunkletGrid[x_n][y_n][z_n];
+                if (oppositeChunklet !== undefined) {
+                  oppositeChunklet.create(result.poxel);
+                } else {
+                  const newChunklet = Chunklet.buildWithPoxel(
+                    new Vector3(x_n, y_n, z_n),
+                    result.poxel
+                  );
+                  this.chunkletGrid[x_n][y_n][z_n] = newChunklet;
+                  this.scene.add(newChunklet.mesh);
+                }
+              } else {
+                console.log("attempt to create outside chunk");
+              }
+            }
+          } else if (event.button === 2) {
+            const disposeChunklet = chunklet.deleteAtFace([a, b, c]);
+            if (disposeChunklet) {
+              this.scene.remove(chunklet.mesh);
+              this.chunkletGrid[x][y][z] = undefined;
+              chunklet.dispose();
+            }
+          }
         }
       }
     }
+  }
+
+  moveDirection(
+    origin: [number, number, number],
+    direction: number
+  ): [number, number, number] {
+    switch (direction) {
+      case 0:
+        return [origin[0], origin[1] - 1, origin[2]];
+      case 1:
+        return [origin[0], origin[1], origin[2] - 1];
+      case 2:
+        return [origin[0] + 1, origin[1], origin[2]];
+      case 3:
+        return [origin[0], origin[1], origin[2] + 1];
+      case 4:
+        return [origin[0] - 1, origin[1], origin[2]];
+      case 5:
+        return [origin[0], origin[1] + 1, origin[2]];
+    }
+    throw "invalid move direction";
   }
 
   chunklets(): Chunklet[] {
