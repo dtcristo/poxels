@@ -30,7 +30,7 @@ export default class World {
     this.camera.position.set(-5, 15, -5);
 
     this.renderer = new WebGLRenderer({ antialias: true });
-    // this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
 
@@ -114,7 +114,7 @@ export default class World {
   onViewportChange() {
     this.camera.aspect = this.aspect();
     this.camera.updateProjectionMatrix();
-    // this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
