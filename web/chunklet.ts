@@ -57,7 +57,7 @@ const L = 11;
 const M = 12;
 const N = 13;
 
-const VERTEX_NAME = [
+const VERTEX_NAMES = [
   "A",
   "B",
   "C",
@@ -245,9 +245,6 @@ const EXTERNAL_MAP: {
   [sortBy([K, G, L]).toString()]: [sortBy([J, I, M]), 2]
 };
 
-const FULL_POXEL_MASK: boolean[] = Array(22).fill(true);
-const EMPTY_POXEL_MASK: boolean[] = Array(22).fill(false);
-
 function buildFaceMap() {
   const faceMap: {
     [key: string]: {
@@ -291,9 +288,10 @@ function poxelFromSortedFace(sortedFace: number[], skipPoxel?: number) {
   return poxel;
 }
 
-console.log(EXTERNAL_MAP);
 const FACE_MAP = buildFaceMap();
-console.log(FACE_MAP);
+
+const FULL_POXEL_MASK: boolean[] = Array(22).fill(true);
+const EMPTY_POXEL_MASK: boolean[] = Array(22).fill(false);
 
 export default class Chunklet {
   geometry: Geometry;
