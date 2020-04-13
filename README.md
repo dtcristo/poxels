@@ -1,5 +1,7 @@
 # Poxels
 
+Left-click places a poxel, right-click deletes one. Have a go here [here](https://poxels-7ca07.web.app/) and make some art.
+
 ## How to install
 
 Installs project dependences. See `script/setup` for details.
