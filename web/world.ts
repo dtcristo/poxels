@@ -35,7 +35,7 @@ export default class World {
     document.body.appendChild(this.renderer.domElement);
 
     this.stats = Stats();
-    document.body.appendChild(this.stats.domElement);
+    // document.body.appendChild(this.stats.domElement);
 
     this.raycaster = new Raycaster();
 
