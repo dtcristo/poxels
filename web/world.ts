@@ -24,11 +24,10 @@ export default class World {
   chunkletGrid: Array<Array<Array<Chunklet | undefined>>>;
   raycaster: Raycaster;
   mouse?: Vector2;
-  selectedChunk?: Vector3;
 
   constructor() {
     this.camera = new PerspectiveCamera(45, this.aspect(), 1, 1000);
-    this.camera.position.set(-5, 10, -5);
+    this.camera.position.set(-5, 15, -5);
 
     this.renderer = new WebGLRenderer({ antialias: true });
     // this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -41,14 +40,9 @@ export default class World {
     this.raycaster = new Raycaster();
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.target = new Vector3(5, 0, 5);
-    // this.controls.autoRotate = true;
+    this.controls.target = new Vector3(5, 2, 5);
 
     this.scene = new Scene();
-
-    // const grid = new GridHelper(10, 10, 0xff0000, 0x00ff00);
-    // grid.position.copy(new Vector3(5, 0, 5));
-    // this.scene.add(grid);
 
     this.chunkletGrid = new Array(X_SIZE);
     for (let x = 0; x < X_SIZE; x++) {
