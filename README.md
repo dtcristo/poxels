@@ -1,6 +1,17 @@
-# Poxels
+<div align="center">
+<h1>🔷 poxels</h1>
+  <p>
+    <strong>Interactive polygon builder.</strong>
+  </p>
+  <a href="https://poxels-7ca07.web.app/">
+    <img src="images/poxels.png" />
+  </a>
+</div>
 
-Left-click places a poxel, right-click deletes one. Have a go here [here](https://poxels-7ca07.web.app/) and make some art.
+## Controls
+
+- Left click places a poxel.
+- Right click deletes a poxel.
 
 ## How to install
 
