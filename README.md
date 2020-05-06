@@ -1,7 +1,7 @@
 <div align="center">
 <h1>🔷 poxels</h1>
   <p>
-    <strong>Interactive polygon builder.</strong>
+    <strong>Interactive polygon builder</strong>
   </p>
   <a href="https://poxels-7ca07.web.app/">
     <img src="images/poxels.png" />
