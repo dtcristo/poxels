@@ -1,9 +1,9 @@
 <div align="center">
-  <h1><a href="https://poxels-7ca07.web.app/">poxels</a></h1>
+  <h1><a href="https://poxels.dtcristo.com/">poxels</a></h1>
   <p>
     <strong>Interactive polygon builder</strong>
   </p>
-  <a href="https://poxels-7ca07.web.app/">
+  <a href="https://poxels.dtcristo.com/">
     <img src="images/poxels.png" />
   </a>
 </div>
