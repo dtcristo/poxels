@@ -2,7 +2,7 @@
   "private": true,
   "dependencies": {
     "lodash-es": "^4.17.20",
-    "three": "^0.112.1",
+    "three": "^0.125.0",
     "tslib": "^1.14.1"
   },
   "devDependencies": {
