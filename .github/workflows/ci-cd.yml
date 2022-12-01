@@ -37,7 +37,6 @@ jobs:
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@1
         with:
-          branch: main
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: poxels
