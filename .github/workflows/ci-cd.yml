@@ -29,6 +29,8 @@ jobs:
       contents: read
       deployments: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Download dist
         uses: actions/download-artifact@v3
         with:
