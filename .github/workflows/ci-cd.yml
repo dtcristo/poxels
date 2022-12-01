@@ -2,18 +2,39 @@ name: CI/CD
 on: push
 jobs:
   build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Setup
+        run: script/setup
+      - name: Build
+        run: script/build
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Download dist
+        uses: actions/download-artifact@v3
         with:
-          node-version: 16
-      - run: script/setup
-      - run: script/build
-      - uses: cloudflare/pages-action@1
+          name: dist
+          path: dist
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@1
         with:
           branch: main
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
