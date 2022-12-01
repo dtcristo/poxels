@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 on: push
 jobs:
   build:
@@ -7,18 +7,13 @@ jobs:
       contents: read
       deployments: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Setup
-        run: script/setup
-      - name: Build
-        run: script/build
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@1
+      - run: script/setup
+      - run: script/build
+      - uses: cloudflare/pages-action@1
         with:
           branch: main
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -26,6 +21,3 @@ jobs:
           projectName: poxels
           directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        id: publish
-      - name: Deployment URL
-        run: echo "${{ steps.publish.outputs.url }}"
