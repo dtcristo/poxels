@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e
-
-cargo test
-wasm-pack test --headless $1

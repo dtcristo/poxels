@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e
-
-# Deploy to Firebase Hosting
-node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
